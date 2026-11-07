@@ -19,7 +19,6 @@ export default function ChatPage() {
           xs: "calc(100dvh - 54px)",
           sm: "calc(100dvh - 64px)",
         },
-        overflow: "hidden",
         bgcolor: "background.default",
       }}
     >

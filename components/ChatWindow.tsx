@@ -47,10 +47,15 @@ export default function ChatWindow() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-  const endRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages, loading]);
 
   async function send(raw: string) {
@@ -223,8 +228,9 @@ export default function ChatWindow() {
         </Box>
       </Box>
 
-      {/* Main Message Stream Area */}
+      {/* Main Message Stream Area (Scrollable Room Chat with Hidden Scrollbar) */}
       <Box
+        ref={scrollRef}
         sx={{
           flex: 1,
           overflowY: "auto",
@@ -232,7 +238,12 @@ export default function ChatWindow() {
           p: { xs: 2, sm: 3 },
           display: "flex",
           flexDirection: "column",
-          overscrollBehavior: "contain",
+          // Sembunyikan tampilan scrollbar di semua browser tapi tetap dapat di-scroll
+          scrollbarWidth: "none", // Firefox
+          msOverflowStyle: "none", // IE / Edge
+          "&::-webkit-scrollbar": {
+            display: "none", // Chrome, Safari, Edge
+          },
         }}
       >
         <Box
@@ -243,8 +254,7 @@ export default function ChatWindow() {
             display: "flex",
             flexDirection: "column",
             gap: 2.5,
-            flex: 1,
-            justifyContent: messages.length === 0 ? "center" : "flex-start",
+            minHeight: "100%",
           }}
         >
           {/* Welcome State when messages are empty (NO BSN LOGO per request) */}
@@ -574,8 +584,6 @@ export default function ChatWindow() {
               </Paper>
             </Box>
           )}
-
-          <div ref={endRef} />
         </Box>
       </Box>
 
