@@ -34,7 +34,10 @@ yarn-error.log*
 .env*
 !.env.example
 
-# vercel
+# agent files
+[Aa][Gg][Ee][Nn][Tt][Ss].[Mm][Dd]
+[Cc][Ll][Aa][Uu][Dd][Ee].[Mm][Dd]
+
 .vercel
 
 # typescript

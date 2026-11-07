@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import Header from "@/components/Header";
-import DisclaimerBanner from "@/components/DisclaimerBanner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,10 +17,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1512" },
+  ],
+};
+
 export const metadata: Metadata = {
   title: "BSN Cicil Emas Assistant",
   description:
-    "Informasi produk BSN Cicil Emas dari PT Bank Syariah Nasional, dengan asisten virtual dan FAQ.",
+    "Informasi produk BSN Cicil Emas dari PT Bank Syariah Nasional, dengan asisten virtual.",
+  icons: {
+    icon: "/bsn-logo.svg",
+    shortcut: "/bsn-logo.svg",
+    apple: "/bsn-logo.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -34,14 +48,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body suppressHydrationWarning>
         <InitColorSchemeScript attribute="class" defaultMode="system" />
         <ThemeRegistry>
-          <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-            <DisclaimerBanner />
+          <Box sx={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
             <Header />
-            <Box component="main" sx={{ flex: 1, px: 2 }}>
+            <Box component="main" sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
               {children}
             </Box>
-            <Box component="footer" sx={{ borderTop: 1, borderColor: "divider", py: 2, textAlign: "center" }}>
-              <Typography variant="caption" color="text.secondary">
+            <Box component="footer" sx={{ borderTop: 1, borderColor: "divider", py: { xs: 1.5, sm: 2 }, px: 2, textAlign: "center" }}>
+              <Typography variant="caption" sx={{ color: "text.secondary", fontSize: { xs: "0.72rem", sm: "0.75rem" }, display: "block" }}>
                 Call Center BSN: 150 286 / 1500 286 · pengaduan@bankbsn.co.id
               </Typography>
             </Box>
