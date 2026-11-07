@@ -35,6 +35,17 @@ async function request(model: string, apiKey: string, messages: ChatMessage[]) {
   );
 }
 
+function cleanResponse(text: string): string {
+  return text
+    // Ubah markdown bold/italic (**teks** atau *teks*) menjadi teks biasa
+    .replace(/\*{2,}([^*]+?)\*{2,}/g, "$1")
+    .replace(/(^|\s)\*([^*\n]+?)\*(?=\s|[.,!?;]|$)/g, "$1$2")
+    // Ubah bullet list berbentuk asterisk (* poin) menjadi bullet bulat
+    .replace(/(^|\n)\s*\*\s+/g, "$1• ")
+    // Bersihkan sisa asterisk jika masih ada
+    .replace(/\*/g, "");
+}
+
 export async function callGemini(messages: ChatMessage[]): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY belum diset");
@@ -48,7 +59,7 @@ export async function callGemini(messages: ChatMessage[]): Promise<string> {
         const text: string | undefined = data?.candidates?.[0]?.content?.parts
           ?.map((p: { text?: string }) => p.text ?? "")
           .join("");
-        if (text) return text;
+        if (text) return cleanResponse(text);
         lastError = `${model}: response kosong`;
         continue;
       }
