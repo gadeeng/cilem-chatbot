@@ -50,13 +50,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeRegistry>
           <Box sx={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
             <Header />
-            <Box component="main" sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+            <Box component="main" sx={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
               {children}
-            </Box>
-            <Box component="footer" sx={{ borderTop: 1, borderColor: "divider", py: { xs: 1.5, sm: 2 }, px: 2, textAlign: "center" }}>
-              <Typography variant="caption" sx={{ color: "text.secondary", fontSize: { xs: "0.72rem", sm: "0.75rem" }, display: "block" }}>
-                Call Center BSN: 150 286 / 1500 286 · pengaduan@bankbsn.co.id
-              </Typography>
             </Box>
           </Box>
         </ThemeRegistry>

@@ -36,7 +36,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Format pesan tidak valid" }, { status: 400 });
   }
   try {
-    const reply = await callGemini(body.messages);
+    // Optimasi kecepatan: ambil 8 pesan percakapan terakhir agar konteks tetap terjaga tanpa membengkakkan token
+    const recentMessages = body.messages.slice(-8);
+    const reply = await callGemini(recentMessages);
     return NextResponse.json({ reply });
   } catch (e) {
     console.error("[api/chat]", e instanceof Error ? e.message : e);

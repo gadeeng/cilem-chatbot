@@ -33,25 +33,26 @@ const features = [
 
 export default function Home() {
   return (
-    <Box
-      sx={(theme) => ({
-        minHeight: "calc(100dvh - 110px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        py: { xs: 4, sm: 6, md: 9 },
-        backgroundImage:
-          "linear-gradient(rgba(246, 248, 247, 0.90), rgba(246, 248, 247, 0.95)), url('/home-bg.jpeg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        ...theme.applyStyles("dark", {
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: { xs: "calc(100dvh - 54px)", sm: "calc(100dvh - 64px)" } }}>
+      <Box
+        sx={(theme) => ({
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          py: { xs: 4, sm: 6, md: 9 },
           backgroundImage:
-            "linear-gradient(rgba(8, 14, 11, 0.86), rgba(8, 14, 11, 0.94)), url('/home-bg.jpeg')",
-        }),
-      })}
-    >
-      <Container maxWidth="md" sx={{ px: { xs: 2, sm: 3 } }}>
+            "linear-gradient(rgba(246, 248, 247, 0.90), rgba(246, 248, 247, 0.95)), url('/home-bg.jpeg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          ...theme.applyStyles("dark", {
+            backgroundImage:
+              "linear-gradient(rgba(8, 14, 11, 0.86), rgba(8, 14, 11, 0.94)), url('/home-bg.jpeg')",
+          }),
+        })}
+      >
+        <Container maxWidth="md" sx={{ px: { xs: 2, sm: 3 } }}>
         <Stack spacing={{ xs: 2, sm: 3 }} sx={{ alignItems: "center", textAlign: "center" }}>
           <Box
             component="img"
@@ -143,6 +144,29 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
+    </Box>
+    <Box
+      component="footer"
+        sx={{
+          borderTop: 1,
+          borderColor: "divider",
+          py: { xs: 2, sm: 2.5 },
+          px: 2,
+          textAlign: "center",
+          bgcolor: "background.paper",
+        }}
+      >
+        <Typography
+          variant="caption"
+          sx={{
+            color: "text.secondary",
+            fontSize: { xs: "0.72rem", sm: "0.78rem" },
+            display: "block",
+          }}
+        >
+          Call Center BSN: 150 286 / 1500 286 · pengaduan@bankbsn.co.id · PT Bank Syariah Nasional
+        </Typography>
+      </Box>
     </Box>
   );
 }

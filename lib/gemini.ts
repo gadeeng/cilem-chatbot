@@ -3,20 +3,31 @@ import { SYSTEM_PROMPT } from "./system-prompt";
 export type ChatMessage = { role: "user" | "model"; content: string };
 
 // Urutan prioritas model:
-// 1. GEMINI_MODEL dari .env.local jika diset (mis. gemini-3.5-flash)
-// 2. gemini-3.5-flash (terbukti aktif & stabil untuk key ini)
-// 3. gemini-3.1-flash-lite (cadangan super cepat, latency ~900ms)
-// 4. gemini-3.8-flash (model generasi terbaru; otomatis dicoba jika 503 sudah reda)
+// 1. GEMINI_MODEL dari .env.local jika diset (default: gemini-3.1-flash-lite)
+// 2. gemini-3.1-flash-lite (pilihan user: ringan & cepat)
+// 3. gemini-3.5-flash-lite (cadangan lite generasi 3.5, sangat cepat ~1.3s)
+// 4. gemini-3.5-flash (cadangan stabil jika lite server Google sedang 503)
+// 5. gemini-3.8-flash (cadangan generasi 3.8)
 const MODELS = [
-  process.env.GEMINI_MODEL,
-  "gemini-3.5-flash",
+  process.env.GEMINI_MODEL || "gemini-3.1-flash-lite",
   "gemini-3.1-flash-lite",
+  "gemini-3.5-flash-lite",
+  "gemini-3.5-flash",
   "gemini-3.8-flash",
 ].filter((m): m is string => Boolean(m && m.trim()));
 
 const RETRYABLE = new Set([429, 500, 503, 504]);
 
 async function request(model: string, apiKey: string, messages: ChatMessage[]) {
+  const generationConfig: Record<string, unknown> = {
+    temperature: 0.3,
+    maxOutputTokens: 800,
+  };
+  // Matikan internal thinking reasoning untuk gemini-3.1-flash-lite agar respon instan
+  if (model.includes("3.1-flash-lite")) {
+    generationConfig.thinkingConfig = { thinkingBudget: 0 };
+  }
+
   return fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
@@ -28,7 +39,7 @@ async function request(model: string, apiKey: string, messages: ChatMessage[]) {
           role: m.role,
           parts: [{ text: m.content }],
         })),
-        generationConfig: { temperature: 0.5 },
+        generationConfig,
       }),
       signal: AbortSignal.timeout(25_000),
     }
@@ -59,7 +70,10 @@ export async function callGemini(messages: ChatMessage[]): Promise<string> {
         const text: string | undefined = data?.candidates?.[0]?.content?.parts
           ?.map((p: { text?: string }) => p.text ?? "")
           .join("");
-        if (text) return cleanResponse(text);
+        if (text) {
+          console.log(`[Gemini] Berhasil memproses dengan model: ${model}`);
+          return cleanResponse(text);
+        }
         lastError = `${model}: response kosong`;
         continue;
       }
