@@ -9,16 +9,44 @@ const theme = createTheme({
   colorSchemes: {
     light: {
       palette: {
-        primary: { main: "#0b7a5b" },
-        secondary: { main: "#b8860b" },
-        background: { default: "#f6f8f7", paper: "#ffffff" },
+        primary: {
+          main: "#006747",
+          dark: "#004d35",
+          light: "#008a5e",
+          contrastText: "#ffffff",
+        },
+        secondary: {
+          main: "#004d35",
+          dark: "#003322",
+          light: "#006747",
+          contrastText: "#ffffff",
+        },
+        background: {
+          default: "#f6f8f7",
+          paper: "#ffffff",
+        },
+        divider: "rgba(0, 40, 20, 0.08)",
       },
     },
     dark: {
       palette: {
-        primary: { main: "#3ddc97" },
-        secondary: { main: "#e0b84c" },
-        background: { default: "#0e1512", paper: "#16201b" },
+        primary: {
+          main: "#14b881",
+          dark: "#008a5e",
+          light: "#38d9a9",
+          contrastText: "#0e1512",
+        },
+        secondary: {
+          main: "#38d9a9",
+          dark: "#14b881",
+          light: "#6ee7b7",
+          contrastText: "#0e1512",
+        },
+        background: {
+          default: "#0b120e",
+          paper: "#131e18",
+        },
+        divider: "rgba(255, 255, 255, 0.08)",
       },
     },
   },
@@ -39,4 +67,3 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
     </AppRouterCacheProvider>
   );
 }
-
