@@ -115,8 +115,50 @@ function simulate(kebutuhan: number, tenor: number, gaji: number, ftv: number) {
   return {
     kebutuhan, tenor, bulan, gaji, ftv,
     plafonKebutuhan, plafonFTV, plafonDSR, plafonFinal, binding,
-    margin, total, angsuran, dsr, dp, fees, status, catatan,
+    margin, total, angsuran, dsr, dp, fees, status, catatan, angsuranFTV,
   };
+}
+
+const roundDown = (n: number, step: number) => Math.floor(n / step) * step;
+const roundUp = (n: number, step: number) => Math.ceil(n / step) * step;
+
+// Saran penyesuaian saat status tidak layak (semua angka tetap berbasis asumsi simulasi).
+function buildRecommendations(sim: ReturnType<typeof simulate>): string[] {
+  if (sim.status !== "TIDAK LAYAK / PERLU PENYESUAIAN" || sim.kebutuhan <= 0 || sim.gaji <= 0) return [];
+  const recs: string[] = [];
+
+  const maxEmasNow = roundDown(sim.plafonDSR / sim.ftv, 100_000);
+  if (maxEmasNow > 0) {
+    recs.push(
+      `Turunkan nilai emas menjadi sekitar ${rupiah(maxEmasNow)} atau kurang (tenor ${sim.tenor} tahun tetap).`
+    );
+  }
+
+  let tenorFound = false;
+  for (let t = sim.tenor + 1; t <= 5; t++) {
+    const alt = simulate(sim.kebutuhan, t, sim.gaji, sim.ftv);
+    if (alt.status !== "TIDAK LAYAK / PERLU PENYESUAIAN") {
+      recs.push(
+        `Perpanjang tenor menjadi ${t} tahun: angsuran sekitar ${rupiah(alt.angsuran)} per bulan (${alt.dsr.toFixed(1)}% dari penghasilan), nilai emas tetap ${rupiah(sim.kebutuhan)}.`
+      );
+      tenorFound = true;
+      break;
+    }
+  }
+  if (!tenorFound && sim.tenor < 5) {
+    const at5 = simulate(sim.kebutuhan, 5, sim.gaji, sim.ftv);
+    const maxEmas5 = roundDown(at5.plafonDSR / sim.ftv, 100_000);
+    recs.push(
+      `Tenor 5 tahun (maksimal) belum cukup untuk nilai emas ini. Gabungkan dengan nilai emas sekitar ${rupiah(maxEmas5)} atau kurang.`
+    );
+  }
+  if (sim.tenor === 5) {
+    recs.push("Tenor sudah di batas maksimal 5 tahun, jadi satu-satunya pilihan adalah menurunkan nilai emas atau menambah penghasilan.");
+  }
+
+  const minGaji = roundUp(sim.angsuranFTV / ASSUMED_DSR_CAP, 100_000);
+  recs.push(`Atau penghasilan rutin minimal sekitar ${rupiah(minGaji)} per bulan untuk nilai emas dan tenor ini.`);
+  return recs;
 }
 
 const statusSeverity = (s: Status) =>
@@ -131,6 +173,7 @@ export default function SimulationCalculator() {
   const [ftv, setFtv] = useState(5 / 6);
 
   const sim = useMemo(() => simulate(kebutuhan, tenor, gaji, ftv), [kebutuhan, tenor, gaji, ftv]);
+  const recommendations = useMemo(() => buildRecommendations(sim), [sim]);
   const perTenor = useMemo(
     () => TENOR_OPTIONS.map((t) => simulate(kebutuhan, t, gaji, ftv)),
     [kebutuhan, gaji, ftv]
@@ -296,6 +339,21 @@ export default function SimulationCalculator() {
                     : "Perlu penyesuaian"}
               </AlertTitle>
               {sim.catatan}
+              {recommendations.length > 0 && (
+                <>
+                  <Typography sx={{ fontWeight: 700, fontSize: "0.9rem", mt: 1.5 }}>
+                    Rekomendasi agar layak
+                  </Typography>
+                  <Box component="ul" sx={{ ...NUM, m: 0, mt: 0.5, pl: 2.5, lineHeight: 1.7, fontSize: "0.9rem" }}>
+                    {recommendations.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </Box>
+                  <Typography variant="caption" sx={{ display: "block", mt: 1, color: "text.secondary" }}>
+                    Angka saran memakai asumsi simulasi, bukan ketentuan resmi BSN.
+                  </Typography>
+                </>
+              )}
             </Alert>
 
             <Paper variant="outlined" sx={{ borderRadius: 3, overflow: "hidden" }}>
