@@ -21,7 +21,7 @@ const RETRYABLE = new Set([429, 500, 503, 504]);
 async function request(model: string, apiKey: string, messages: ChatMessage[]) {
   const generationConfig: Record<string, unknown> = {
     temperature: 0.3,
-    maxOutputTokens: 800,
+    maxOutputTokens: 1200,
   };
   // Matikan internal thinking reasoning untuk gemini-3.1-flash-lite agar respon instan
   if (model.includes("3.1-flash-lite")) {

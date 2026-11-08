@@ -28,6 +28,7 @@ import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import FormattedMessage from "./FormattedMessage";
+import LatticeLoader from "./LatticeLoader";
 
 type Msg = {
   role: "user" | "model";
@@ -558,7 +559,7 @@ export default function ChatWindow() {
             );
           })}
 
-          {/* Animated Typing Indicator */}
+          {/* Animated Typing Indicator with LatticeLoader */}
           {loading && (
             <Box sx={{ display: "flex", gap: 1.5, alignItems: "flex-start", pl: 0.5 }}>
               <Avatar
@@ -578,62 +579,29 @@ export default function ChatWindow() {
                 elevation={0}
                 variant="outlined"
                 sx={{
-                  py: 1.25,
-                  px: 2,
+                  py: 1.35,
+                  px: 2.25,
                   borderRadius: "20px 20px 20px 4px",
                   bgcolor: "background.paper",
+                  color: "text.secondary",
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: 1.25,
                 }}
               >
-                <Box sx={{ display: "flex", gap: 0.6, alignItems: "center" }}>
-                  <Box
-                    sx={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: "50%",
-                      bgcolor: "primary.main",
-                      animation: "pulseDot 1.4s infinite ease-in-out both",
-                      animationDelay: "0s",
-                      "@keyframes pulseDot": {
-                        "0%, 80%, 100%": { transform: "scale(0.6)", opacity: 0.4 },
-                        "40%": { transform: "scale(1.1)", opacity: 1 },
-                      },
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: "50%",
-                      bgcolor: "primary.main",
-                      animation: "pulseDot 1.4s infinite ease-in-out both",
-                      animationDelay: "0.2s",
-                      "@keyframes pulseDot": {
-                        "0%, 80%, 100%": { transform: "scale(0.6)", opacity: 0.4 },
-                        "40%": { transform: "scale(1.1)", opacity: 1 },
-                      },
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: "50%",
-                      bgcolor: "primary.main",
-                      animation: "pulseDot 1.4s infinite ease-in-out both",
-                      animationDelay: "0.4s",
-                      "@keyframes pulseDot": {
-                        "0%, 80%, 100%": { transform: "scale(0.6)", opacity: 0.4 },
-                        "40%": { transform: "scale(1.1)", opacity: 1 },
-                      },
-                    }}
-                  />
-                </Box>
-                <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 600, fontSize: "0.78rem" }}>
-                  ALIEF sedang menyiapkan rincian resmi...
-                </Typography>
+                <LatticeLoader
+                  label="ALIEF sedang menyiapkan rincian resmi..."
+                  status="working"
+                  pattern="orbit"
+                  grid={3}
+                  shape="round"
+                  color="var(--mui-palette-primary-main, #006747)"
+                  doneColor="var(--mui-palette-primary-main, #006747)"
+                  cellSize={5}
+                  gap={2}
+                  fontSize={13}
+                  glow={true}
+                  showTimer={true}
+                />
               </Paper>
             </Box>
           )}

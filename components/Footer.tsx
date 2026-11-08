@@ -6,9 +6,24 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import XIcon from "@mui/icons-material/X";
+
+// Standalone bare 'f' glyph matching bankbsn.co.id official footer
+function FacebookBareIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      style={{ display: "block" }}
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -18,11 +33,11 @@ export default function Footer() {
         bgcolor: "background.paper",
         borderTop: 1,
         borderColor: "divider",
-        pt: { xs: 5, sm: 6 },
-        pb: { xs: 5, sm: 6 },
+        pt: { xs: 4, sm: 5 },
+        pb: { xs: 4, sm: 5 },
       }}
     >
-      <Container maxWidth="lg" sx={{ px: { xs: 2.5, sm: 4, md: 6 } }}>
+      <Container maxWidth="md" sx={{ px: { xs: 2.5, sm: 4 } }}>
         {/* Baris 1: Kantor Pusat (Kiri) & BSN Call (Kanan) */}
         <Box
           sx={{
@@ -40,9 +55,8 @@ export default function Footer() {
               sx={{
                 fontWeight: 700,
                 color: "primary.main",
-                fontSize: { xs: "0.95rem", sm: "1.05rem" },
+                fontSize: { xs: "0.95rem", sm: "1.02rem" },
                 lineHeight: 1.35,
-                mb: 1.25,
               }}
             >
               Kantor Pusat & Pusat<br />Operasional
@@ -51,8 +65,9 @@ export default function Footer() {
               variant="body2"
               sx={{
                 color: "text.secondary",
-                fontSize: { xs: "0.82rem", sm: "0.875rem" },
-                lineHeight: 1.65,
+                fontSize: { xs: "0.82rem", sm: "0.85rem" },
+                lineHeight: 1.6,
+                mt: 0.75,
               }}
             >
               Menara Bank BTN lt. 11,<br />
@@ -68,8 +83,8 @@ export default function Footer() {
               sx={{
                 fontWeight: 700,
                 color: "primary.main",
-                fontSize: { xs: "0.95rem", sm: "1.05rem" },
-                mb: 0.75,
+                fontSize: { xs: "0.95rem", sm: "1.02rem" },
+                lineHeight: 1.35,
               }}
             >
               BSN Call
@@ -78,8 +93,9 @@ export default function Footer() {
               variant="body2"
               sx={{
                 color: "text.secondary",
-                fontSize: { xs: "0.82rem", sm: "0.875rem" },
-                lineHeight: 1.65,
+                fontSize: { xs: "0.82rem", sm: "0.85rem" },
+                lineHeight: 1.6,
+                mt: 0.75,
               }}
             >
               1500-286 atau 150-286
@@ -90,14 +106,14 @@ export default function Footer() {
         {/* Baris 2: Garis Horizontal dengan Ikon Sosial Media di Tengah */}
         <Divider
           sx={{
-            my: { xs: 4, sm: 5 },
+            my: { xs: 3.5, sm: 4 },
             borderColor: "divider",
             "&::before, &::after": {
               borderColor: "divider",
             },
           }}
         >
-          <Stack direction="row" spacing={2.5} sx={{ px: 2, alignItems: "center" }}>
+          <Stack direction="row" spacing={3} sx={{ px: 2, alignItems: "center" }}>
             <IconButton
               component="a"
               href="https://www.facebook.com/bankbsn.id"
@@ -115,7 +131,7 @@ export default function Footer() {
                 },
               }}
             >
-              <FacebookIcon sx={{ fontSize: 22 }} />
+              <FacebookBareIcon />
             </IconButton>
 
             <IconButton
@@ -135,7 +151,7 @@ export default function Footer() {
                 },
               }}
             >
-              <InstagramIcon sx={{ fontSize: 21 }} />
+              <InstagramIcon sx={{ fontSize: 20 }} />
             </IconButton>
 
             <IconButton
@@ -155,7 +171,7 @@ export default function Footer() {
                 },
               }}
             >
-              <XIcon sx={{ fontSize: 18 }} />
+              <XIcon sx={{ fontSize: 17 }} />
             </IconButton>
           </Stack>
         </Divider>
@@ -188,15 +204,14 @@ export default function Footer() {
               rel="noopener noreferrer"
               sx={{
                 color: "text.primary",
-                fontWeight: 600,
+                fontWeight: 400,
                 textDecoration: "underline",
                 transition: "color 0.2s ease",
                 "&:hover": { color: "primary.main" },
               }}
             >
-              sini
+              sini.
             </Box>
-            .
           </Typography>
 
           {/* Sisi Kanan: Copyright */}
@@ -208,6 +223,7 @@ export default function Footer() {
               textAlign: { xs: "left", sm: "right" },
               whiteSpace: { xs: "normal", sm: "nowrap" },
               mt: { xs: 1, sm: 0 },
+              lineHeight: 1.7,
             }}
           >
             © 2026{" "}
@@ -218,7 +234,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               sx={{
                 color: "text.primary",
-                fontWeight: 600,
+                fontWeight: 400,
                 textDecoration: "underline",
                 transition: "color 0.2s ease",
                 "&:hover": { color: "primary.main" },

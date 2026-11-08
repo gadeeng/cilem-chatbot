@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ChatIcon from "@mui/icons-material/Chat";
+import CalculateRoundedIcon from "@mui/icons-material/CalculateRounded";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import SpeedIcon from "@mui/icons-material/Speed";
 import PaymentsIcon from "@mui/icons-material/Payments";
@@ -96,30 +97,62 @@ export default function Home() {
               emas murni secara terencana, aman, dan penuh keberkahan.
             </Typography>
 
-            <Button
-              component={Link}
-              href="/chat"
-              variant="contained"
-              size="large"
-              startIcon={<ChatIcon />}
-              sx={{
-                px: { xs: 3.5, sm: 4.5 },
-                py: { xs: 1.3, sm: 1.5 },
-                fontSize: { xs: "0.95rem", sm: "1.05rem" },
-                borderRadius: 3,
-                boxShadow: "0 4px 14px rgba(0, 103, 71, 0.25)",
-                width: { xs: "100%", sm: "auto" },
-                maxWidth: { xs: 320, sm: "none" },
-                mt: 1,
-                transition: "all 0.2s ease",
-                "&:hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow: "0 6px 20px rgba(0, 103, 71, 0.35)",
-                },
-              }}
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1.5}
+              sx={{ width: { xs: "100%", sm: "auto" }, alignItems: "center", justifyContent: "center", mt: 1 }}
             >
-              Konsultasi dengan ALIEF
-            </Button>
+              <Button
+                component={Link}
+                href="/chat"
+                variant="contained"
+                size="large"
+                startIcon={<ChatIcon />}
+                sx={{
+                  px: { xs: 3.5, sm: 4 },
+                  py: { xs: 1.3, sm: 1.45 },
+                  fontSize: { xs: "0.95rem", sm: "1rem" },
+                  borderRadius: 3,
+                  boxShadow: "0 4px 14px rgba(0, 103, 71, 0.25)",
+                  width: { xs: "100%", sm: "auto" },
+                  maxWidth: { xs: 320, sm: "none" },
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 6px 20px rgba(0, 103, 71, 0.35)",
+                  },
+                }}
+              >
+                Konsultasi dengan ALIEF
+              </Button>
+
+              <Button
+                component={Link}
+                href="/simulasi"
+                variant="outlined"
+                size="large"
+                startIcon={<CalculateRoundedIcon />}
+                sx={{
+                  px: { xs: 3.5, sm: 3.5 },
+                  py: { xs: 1.3, sm: 1.45 },
+                  fontSize: { xs: "0.95rem", sm: "1rem" },
+                  borderRadius: 3,
+                  bgcolor: "background.paper",
+                  borderColor: "primary.main",
+                  color: "primary.main",
+                  width: { xs: "100%", sm: "auto" },
+                  maxWidth: { xs: 320, sm: "none" },
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    transform: "translateY(-2px)",
+                    bgcolor: "rgba(0, 103, 71, 0.06)",
+                    borderColor: "primary.main",
+                  },
+                }}
+              >
+                Simulasi Perhitungan
+              </Button>
+            </Stack>
           </Stack>
 
           {/* Three Key Pillar Cards */}

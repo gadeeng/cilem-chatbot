@@ -162,13 +162,15 @@ export default function FormattedMessage({ content, isUser = false }: FormattedM
                           key={cIdx}
                           sx={{
                             fontSize: "0.8rem",
-                            py: 1,
+                            fontWeight: cIdx === 0 ? 600 : 400,
+                            py: 1.15,
                             px: 1.5,
                             color: "text.primary",
                             lineHeight: 1.5,
+                            verticalAlign: "middle",
                           }}
                         >
-                          {cell}
+                          {parseInlineSpans(cell, `cell-${rIdx}-${cIdx}`)}
                         </TableCell>
                       ))}
                     </TableRow>
@@ -356,11 +358,11 @@ function renderFormattedText(text: string): React.ReactNode[] {
 }
 
 /**
- * Parses bold text and clickable URLs / phone numbers.
+ * Parses bold text, clickable URLs / phone numbers, and highlighted brackets.
  */
 function parseInlineSpans(text: string, keyPrefix: string): React.ReactNode[] {
-  // Regex pattern for bold **text**, URLs http(s)://..., or phone numbers
-  const regex = /(\*\*[^*]+\*\*|https?:\/\/[^\s)]+|150\s?286|1500\s?286)/g;
+  // Regex pattern for bold **text**, URLs http(s)://..., phone numbers, or bracket highlights [STATUS: ...]
+  const regex = /(\*\*[^*]+\*\*|https?:\/\/[^\s)]+|150\s?286|1500\s?286|\[(?:STATUS|PLAFON|ANGSURAN|RINGKASAN|HASIL|KEPUTUSAN)[^\]]*\])/g;
   const parts = text.split(regex);
 
   return parts.map((part, idx) => {
@@ -371,6 +373,58 @@ function parseInlineSpans(text: string, keyPrefix: string): React.ReactNode[] {
         <strong key={key} style={{ fontWeight: 700, color: "inherit" }}>
           {part.slice(2, -2)}
         </strong>
+      );
+    }
+
+    // Bracketed Highlight Pills (e.g. [STATUS: LAYAK], [ANGSURAN: Rp .../bulan])
+    if (part.startsWith("[") && part.endsWith("]")) {
+      const isError = part.includes("TIDAK LAYAK");
+      const isWarning = part.includes("DENGAN DP") || part.includes("PERLU PENYESUAIAN");
+      const isSuccess = part.includes("LAYAK") && !isError && !isWarning;
+
+      const bgColor = isError
+        ? "rgba(211, 47, 47, 0.1)"
+        : isWarning
+        ? "rgba(237, 108, 2, 0.12)"
+        : isSuccess
+        ? "rgba(0, 103, 71, 0.12)"
+        : "rgba(0, 103, 71, 0.08)";
+
+      const textColor = isError
+        ? "#c62828"
+        : isWarning
+        ? "#b45309"
+        : "primary.main";
+
+      const borderColor = isError
+        ? "rgba(211, 47, 47, 0.3)"
+        : isWarning
+        ? "rgba(237, 108, 2, 0.35)"
+        : "rgba(0, 103, 71, 0.25)";
+
+      return (
+        <Box
+          key={key}
+          component="span"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            bgcolor: bgColor,
+            color: textColor,
+            border: 1,
+            borderColor: borderColor,
+            borderRadius: 1.5,
+            px: 0.9,
+            py: 0.2,
+            mx: 0.3,
+            fontSize: "0.82rem",
+            fontWeight: 800,
+            letterSpacing: "0.2px",
+            verticalAlign: "baseline",
+          }}
+        >
+          {part.slice(1, -1)}
+        </Box>
       );
     }
 

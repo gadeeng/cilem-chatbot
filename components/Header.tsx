@@ -11,6 +11,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { href: "/", label: "Beranda" },
+  { href: "/simulasi", label: "Simulasi" },
   { href: "/chat", label: "Chat" },
 ];
 
