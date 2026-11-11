@@ -308,10 +308,10 @@ function classifyMode(messages: ChatMessage[], simParams: ExtractedSimParams): "
 
   const hasAllThree = Boolean(
     simParams.kebutuhanEmas &&
-      simParams.gajiBulanan &&
-      simParams.tenorTahun &&
-      simParams.tenorTahun >= 2 &&
-      simParams.tenorTahun <= 5
+    simParams.gajiBulanan &&
+    simParams.tenorTahun &&
+    simParams.tenorTahun >= 2 &&
+    simParams.tenorTahun <= 5
   );
   if (hasAllThree) return "calculation";
 

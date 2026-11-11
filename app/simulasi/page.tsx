@@ -3,9 +3,9 @@ import SimulationCalculator from "@/components/SimulationCalculator";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Simulasi Perhitungan — BSN Cicil Emas",
+  title: "Harga Emas & Simulasi — BSN Cicil Emas",
   description:
-    "Kalkulator simulasi plafon pembiayaan, angsuran bulanan tetap, biaya awal, dan kelayakan BSN Cicil Emas dari PT Bank Syariah Nasional.",
+    "Pantau grafik harga emas harian, tabel harga emas batangan (Antam, Galeri 24, UBS), serta kalkulator simulasi plafon dan angsuran tetap BSN Cicil Emas.",
 };
 
 export default function SimulasiPage() {
