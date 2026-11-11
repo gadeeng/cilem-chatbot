@@ -48,7 +48,6 @@ const PROMPT_SUGGESTIONS = [
 ];
 
 const PERSISTENT_PROMPTS = [
-  "Syarat Karyawan",
   "Tabel Biaya",
   "Pilihan Tenor",
   "Simulasi 10 Gram",
